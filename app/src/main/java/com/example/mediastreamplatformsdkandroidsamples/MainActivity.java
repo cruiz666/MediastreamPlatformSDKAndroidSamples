@@ -1,22 +1,28 @@
 package com.example.mediastreamplatformsdkandroidsamples;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import org.json.JSONObject;
+
 import am.mediastre.mediastreamplatformsdkandroid.MediastreamMiniPlayerConfig;
 import am.mediastre.mediastreamplatformsdkandroid.MediastreamPlayer;
 import am.mediastre.mediastreamplatformsdkandroid.MediastreamPlayerCallback;
 import am.mediastre.mediastreamplatformsdkandroid.MediastreamPlayerConfig;
+import am.mediastre.mediastreamplatformsdkandroid.MediastreamPlayerService;
 
 public class MainActivity extends AppCompatActivity {
 
     private FrameLayout container;
     private PlayerView playerView;
     private MediastreamPlayer player;
+    private MediastreamMiniPlayerConfig miniPlayerConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         player = new MediastreamPlayer(this, config, container, playerView);
 
         // You can listen player callbacks too
-        player.addPlayerCallback(new MediastreamPlayerCallback() {
+        /*player.addPlayerCallback(new MediastreamPlayerCallback() {
             @Override
             public void onPlay() {
                 System.out.println("MEDIASTREAM PLAYER PLAY");
@@ -86,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
                 config2.id = "5ebc7a08fdbffb09adc33765";
                 config2.type = MediastreamPlayerConfig.VideoTypes.VOD;
                 player.reloadPlayer(config2);
+            }
+
+            @Override
+            public void onBuffering() {
+
             }
 
             @Override
@@ -156,6 +167,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            public void onAdBuffering() {
+
+            }
+
+            @Override
             public void onConfigChange(MediastreamMiniPlayerConfig config) {
                 System.out.println("MEDIASTREAM PLAYER CONFIG CHANGE");
             }
@@ -209,7 +225,185 @@ public class MainActivity extends AppCompatActivity {
             public void onCastSessionSuspended() {
                 //coming soon
             }
-        });
+
+            @Override
+            public void onPlaybackErrors(JSONObject error) {
+
+            }
+        });*/
+
+        // How to play audio as service
+        /*MediastreamPlayerConfig config = new MediastreamPlayerConfig();
+        config.id = liveID;
+        config.accountID = accountID;
+        config.type = MediastreamPlayerConfig.VideoTypes.LIVE;
+        container = findViewById(R.id.main_media_frame);
+        startService(config);*/
+    }
+
+    void startService(MediastreamPlayerConfig config) {
+        playerView = findViewById(R.id.player_view);
+        miniPlayerConfig = new MediastreamMiniPlayerConfig();
+        MediastreamPlayerCallback cb =  new MediastreamPlayerCallback() {
+            @Override
+            public void onPlay() {
+
+            }
+
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onReady() {
+
+            }
+
+            @Override
+            public void onEnd() {
+
+            }
+
+            @Override
+            public void onBuffering() {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+
+            @Override
+            public void onNext() {
+
+            }
+
+            @Override
+            public void onPrevious() {
+
+            }
+
+            @Override
+            public void onFullscreen() {
+
+            }
+
+            @Override
+            public void offFullscreen() {
+
+            }
+
+            @Override
+            public void onNewSourceAdded() {
+
+            }
+
+            @Override
+            public void onLocalSourceAdded() {
+
+            }
+
+            @Override
+            public void onAdPlay() {
+
+            }
+
+            @Override
+            public void onAdPause() {
+
+            }
+
+            @Override
+            public void onAdLoaded() {
+
+            }
+
+            @Override
+            public void onAdResume() {
+
+            }
+
+            @Override
+            public void onAdEnded() {
+
+            }
+
+            @Override
+            public void onAdError() {
+
+            }
+
+            @Override
+            public void onAdBuffering() {
+
+            }
+
+            @Override
+            public void onConfigChange(MediastreamMiniPlayerConfig config) {
+
+            }
+
+            @Override
+            public void onCastAvailable(Boolean state) {
+
+            }
+
+            @Override
+            public void onCastSessionStarting() {
+
+            }
+
+            @Override
+            public void onCastSessionStarted() {
+
+            }
+
+            @Override
+            public void onCastSessionStartFailed() {
+
+            }
+
+            @Override
+            public void onCastSessionEnding() {
+
+            }
+
+            @Override
+            public void onCastSessionEnded() {
+
+            }
+
+            @Override
+            public void onCastSessionResuming() {
+
+            }
+
+            @Override
+            public void onCastSessionResumed() {
+
+            }
+
+            @Override
+            public void onCastSessionResumeFailed() {
+
+            }
+
+            @Override
+            public void onCastSessionSuspended() {
+
+            }
+
+            @Override
+            public void onPlaybackErrors(JSONObject error) {
+
+            }
+        };
+        MediastreamPlayerService.setupService(this, config, container, playerView, miniPlayerConfig, false, "", cb);
+        Intent serviceIntent = new Intent(this, MediastreamPlayerService.class);
+        serviceIntent.setAction(getPackageName()+".action.startforeground");
+        ContextCompat.startForegroundService(this, serviceIntent);
     }
 
     @Override
