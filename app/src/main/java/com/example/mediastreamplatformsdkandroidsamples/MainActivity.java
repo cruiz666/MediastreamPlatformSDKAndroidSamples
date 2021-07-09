@@ -23,15 +23,14 @@ public class MainActivity extends AppCompatActivity {
     private PlayerView playerView;
     private MediastreamPlayer player;
     private MediastreamMiniPlayerConfig miniPlayerConfig;
+    String accountID = "55117baedc01616019533551";
+    String vodID = "5eea2dc5a7fc9f0753de12b0";
+    String liveID = "5ddfef39d0ff235bffface57";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String accountID = "55117baedc01616019533551";
-        String vodID = "5eea2dc5a7fc9f0753de12b0";
-        String liveID = "5ddfef39d0ff235bffface57";
 
         // ===== HOW TO PLAY VOD ===== //
         MediastreamPlayerConfig config = new MediastreamPlayerConfig();
@@ -400,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        MediastreamPlayerService.setupService(this, config, container, playerView, miniPlayerConfig, false, "", cb);
+        MediastreamPlayerService.setupService(this, config, container, playerView, miniPlayerConfig, true, accountID, cb);
         Intent serviceIntent = new Intent(this, MediastreamPlayerService.class);
         serviceIntent.setAction(getPackageName()+".action.startforeground");
         ContextCompat.startForegroundService(this, serviceIntent);
