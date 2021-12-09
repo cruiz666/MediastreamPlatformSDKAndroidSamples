@@ -14,6 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Player"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:screenOrientation="fullSensor"></activity> <!-- Google Play Services (gms) is required by the Google IMA SDK -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize">
             <intent-filter>
@@ -22,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name="am.mediastre.mediastreamplatformsdkandroid.MediastreamActionService"/>
         <service android:name="am.mediastre.mediastreamplatformsdkandroid.MediastreamPlayerService" />
     </application>
 
