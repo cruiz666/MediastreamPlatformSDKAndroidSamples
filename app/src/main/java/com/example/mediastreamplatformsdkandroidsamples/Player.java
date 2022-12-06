@@ -247,6 +247,11 @@ public class Player extends AppCompatActivity {
             public void onEmbedErrors(JSONObject error) {
 
             }
+
+            @Override
+            public void onLiveAudioCurrentSongChanged(JSONObject data) {
+
+            }
         });
 
         if (isService) {
