@@ -86,8 +86,7 @@ public class Player extends AppCompatActivity {
 
         isService = intent.getBooleanExtra("isService", false);
         container = findViewById(R.id.main_media_frame);
-        player = new MediastreamPlayer(this, config, container);
-        player.addPlayerCallback(new MediastreamPlayerCallback() {
+        MediastreamPlayerCallback mediastreamPlayerCallback = new MediastreamPlayerCallback() {
             @Override
             public void onPlay() {
 
@@ -252,30 +251,34 @@ public class Player extends AppCompatActivity {
             public void onLiveAudioCurrentSongChanged(JSONObject data) {
 
             }
-        });
-
+        };
         if (isService) {
-            startService(player);
+            startService(config, container, mediastreamPlayerCallback);
+        } else {
+            player = new MediastreamPlayer(this, config, container);
+            player.addPlayerCallback(mediastreamPlayerCallback);
         }
     }
 
     @Override
     public void onBackPressed() {
-        player.releasePlayer();
         if (isService) {
             Intent serviceIntent = new Intent(this, MediastreamPlayerService.class);
             serviceIntent.setAction(getPackageName()+".action.stopforeground");
             try {
+                MediastreamPlayerService.getMsPlayer().releasePlayer();
                 ContextCompat.startForegroundService(this, serviceIntent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            player.releasePlayer();
         }
         startActivity(new Intent(Player.this, MainActivity.class));
     }
 
-    void startService(MediastreamPlayer player) {
-        MediastreamPlayerService.setupService(player);
+    void startService(MediastreamPlayerConfig config, FrameLayout container, MediastreamPlayerCallback callback) {
+        MediastreamPlayerService.setupService(config, this, container, callback);
         Intent serviceIntent = new Intent(this, MediastreamPlayerService.class);
         serviceIntent.setAction(getPackageName()+".action.startforeground");
         ContextCompat.startForegroundService(this, serviceIntent);
